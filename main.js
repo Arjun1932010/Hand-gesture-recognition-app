@@ -21,3 +21,40 @@ classifier=ml5.imageClassifier("https://teachablemachine.withgoogle.com/models/e
 function modelLoaded(){
     console.log("Model is loaded");
 }
+function speak(){
+    var synth=window.speechSynthesis;
+    speak_data_1="The first prediction is"+prediction_1;
+    speak_data_2="The second prediction is"+prediction_2;
+    UtterThis= new SpeechSynthesisUtterance(speak_data_1+speak_data_2);
+    UtterThis.rate=0.5;
+    synth.speak(UtterThis);
+}
+function check(){
+    img=document.getElementById("captured_gesture");
+    classifier.classify(img,gotResult);
+}
+function gotResult(error,results){
+    if(error){
+        console.log(error);
+    }
+    else{
+        console.log(results);
+       document.getElementById("result_gesture_name").innerHTML=results[0].label;
+       
+       prediction_1=results[0].label;
+      
+       speak();
+
+       if(results[0].label=="victory"){
+        document.getElementById("update_gesture").innerHTML="&#9996;";
+       }
+       if(results[0].label=="amazing"){
+        document.getElementById("update_gesture").innerHTML="&#128076;";
+       }
+       if(results[0].label=="best"){
+        document.getElementById("update_gesture").innerHTML="&#128077;";
+       }
+       
+    }
+
+}
